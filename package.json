@@ -1,0 +1,26 @@
+{
+  "name": "companydata",
+  "version": "1.0.0",
+  "description": "API liefert Gewinn- und Bilanzzahlen von Unternehmen",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/railbird/companydata.git"
+  },
+  "author": "O.S.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/railbird/companydata/issues"
+  },
+  "homepage": "https://github.com/railbird/companydata#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.1",
+    "express": "^4.15.3",
+    "mongoose": "^4.11.0",
+    "morgan": "^1.8.2",
+    "request": "^2.81.0"
+  }
+}
