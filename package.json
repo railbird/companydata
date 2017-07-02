@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/railbird/companydata#readme",
   "dependencies": {
+    "body-parser": "^1.17.2",
     "cheerio": "^1.0.0-rc.1",
     "express": "^4.15.3",
     "mongoose": "^4.11.0",

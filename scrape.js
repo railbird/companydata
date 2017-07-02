@@ -6,6 +6,7 @@ const models = require('./models');
 let scrapeFor = function(req, res, next) {
     let companyName = req.query.name;
     request('https://www.northdata.de/' + companyName, (err, response, body) => {
+
         let $ = cheerio.load(body);
 
         // ueberpruefen ob wir direkt auf der Company Seite gelandet sind, oder
@@ -18,30 +19,34 @@ let scrapeFor = function(req, res, next) {
             };
             let numberSearchResults = $('.summary').children().length;
             for (let i = 0; i < numberSearchResults; i++) {
-                let comName = $('.summary').children().eq(i).text();
-                companyNamesFound.companies.push(comName);
+                let searchResults = {};
+
+                searchResults.comName = $('.summary').children().eq(i).text();
+                searchResults.link = $('.summary').children().eq(i).attr("href");
+                companyNamesFound.companies.push(searchResults);
             };
 
-             return res.json(companyNamesFound);
+            return res.json(companyNamesFound);
         };
 
-              // replace companyName with target sites standard convention
-              req.params.companyName = $('.prompt').attr('value');
-              // companyData = Jahr, Bilanzsumme, Gewinn
-              let companyData = $('.tab-content').attr('data-data');
-              // companyHistory = Important Events and Dates in the History of the Company
-              let companyHistory = $('.bizq').first().attr('data-data');
+        // replace companyName with target sites standard convention
+        req.params.companyName = $('.prompt').attr('value');
+        // companyData = Jahr, Bilanzsumme, Gewinn
+        let companyData = $('.tab-content').attr('data-data');
+        // companyHistory = Important Events and Dates in the History of the Company
+        let companyHistory = $('.bizq').first().attr('data-data');
 
-              try {
-                req.params.companyData = JSON.parse(companyData);
-                req.params.companyHistory = JSON.parse(companyHistory);
-              } catch(err) {
-                err = new Error("Die Firma hat keine Unternehmenszahlen veröffentlicht");
-                return next(err);
-              };
-              //res.json(companyData.item[0].data.data);
-              // formattieren und in DB speichern.
-              models.save(req, res, next);
+        try {
+            req.params.companyData = JSON.parse(companyData);
+            req.params.companyHistory = JSON.parse(companyHistory);
+        } catch (err) {
+
+            return res.json({
+                error: "Die Firma hat keine Unternehmenszahlen veröffentlicht"
+            });
+        };
+
+        models.save(req, res, next);
 
 
     });
