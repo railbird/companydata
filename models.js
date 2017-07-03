@@ -10,11 +10,19 @@ const CompanySchema = new Schema({
     history: {}
 });
 
+const LinkSchema = new Schema({
+  hrb: String,
+  link: String
+});
+
+const Link = mongoose.model("Link", LinkSchema);
+
 
 const Company = mongoose.model("Company", CompanySchema);
 
 function save(req, res, next) {
     let data = [];
+    console.log("bin in save");
     // Jahreszahl und Gewinn in data Array speichern
     req.params.companyData.item[0].data.data.forEach(element => {
         data.push({
@@ -68,3 +76,4 @@ function save(req, res, next) {
 
 module.exports.Company = Company;
 module.exports.save = save;
+module.exports.Link = Link;

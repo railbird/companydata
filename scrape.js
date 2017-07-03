@@ -5,7 +5,9 @@ const models = require('./models');
 
 let scrapeFor = function(req, res, next) {
     let companyName = req.query.name;
-    request('https://www.northdata.de/' + companyName, (err, response, body) => {
+    let searchQuery = req.params.searchQuery;
+
+    request("" + searchQuery, (err, response, body) => {
 
         let $ = cheerio.load(body);
 
@@ -14,21 +16,44 @@ let scrapeFor = function(req, res, next) {
         // when true --> Uebersichtsseite. Query muss praezisiert werden.
         if ($('.search-results').text()) {
             let companyNamesFound = {
-                error: "Bitte Firmenname praezisieren",
+                error: "Bitte Firmenname praezisieren oder mit hrb='HRB Nummer' suchen",
                 companies: []
             };
+
             let numberSearchResults = $('.summary').children().length;
+            console.log(numberSearchResults);
             for (let i = 0; i < numberSearchResults; i++) {
                 let searchResults = {};
 
-                searchResults.comName = $('.summary').children().eq(i).text();
+                searchResults.name = $('.summary').children().eq(i).text();
                 searchResults.link = $('.summary').children().eq(i).attr("href");
+                try {
+                  searchResults.HRB = $('.summary').children().eq(i).attr("href").split("HRB+")[1];
+                } catch(err) {
+                  searchResults.HRB = "";
+                }
+
+                  let link = new models.Link({hrb: searchResults.HRB, link: searchResults.link});
+                  models.Link.findOne({hrb: searchResults.HRB}, (err, doc) => {
+                    if(!doc) {
+                      link.save((err, doc) => {
+                        console.log(doc.hrb + " has been saved");
+                      });
+                    };
+                  });
+
+                delete searchResults.link;
+
                 companyNamesFound.companies.push(searchResults);
+
+
             };
+
+
 
             return res.json(companyNamesFound);
         };
-
+        console.log("bin in main scrape");
         // replace companyName with target sites standard convention
         req.params.companyName = $('.prompt').attr('value');
         // companyData = Jahr, Bilanzsumme, Gewinn
@@ -40,10 +65,12 @@ let scrapeFor = function(req, res, next) {
             req.params.companyData = JSON.parse(companyData);
             req.params.companyHistory = JSON.parse(companyHistory);
         } catch (err) {
-
-            return res.json({
+            err = new Error("Die Firma hat keine Unternehmenszahlen veröffentlicht");
+            err.status = 404;
+            /*return res.json({
                 error: "Die Firma hat keine Unternehmenszahlen veröffentlicht"
-            });
+            });*/
+            return next(err);
         };
 
         models.save(req, res, next);

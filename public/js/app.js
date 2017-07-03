@@ -41,7 +41,7 @@ function callApi(param) {
         } else if (param === "companies/details") {
             // list all data to all companies
         } else {
-            console.log(data);
+
             if (data.error && data.companies) {
                 $('#output').text(data.error + ": \n" + data.companies);
                 return;
@@ -52,6 +52,14 @@ function callApi(param) {
             };
             var text = "";
             data.data.forEach(function(element) {
+                if(element.bilanzsumme) {
+                  element.bilanzsumme = parseInt(element.bilanzsumme);
+                  element.bilanzsumme = Math.round(element.bilanzsumme).toFixed(2);
+                };
+                if(element.gewinn) {
+                  element.gewinn = parseInt(element.gewinn);
+                  element.gewinn = Math.round(element.gewinn).toFixed(2);
+                };
                 var bilanzsumme = element.bilanzsumme || "nicht veröffentlicht";
                 text += "Jahr: " + element.year + "  Gewinn: " + element.gewinn + "  Bilanzsumme: " + bilanzsumme + "\n";
             });
