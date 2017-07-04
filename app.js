@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const express = require('express');
 const app = express();
@@ -6,19 +6,15 @@ const routes = require('./routes');
 const logger = require('morgan');
 
 
-
-
 app.use(logger("dev"));
 
 app.use(express.static(__dirname + '/public'));
 
 app.use((req, res, next) => {
-    console.log("The Middleware is working.");
     next();
 });
 
 const mongoose = require('mongoose');
-const Company = require("./models").Company;
 
 mongoose.connect('mongodb://localhost:27017/sandbox');
 const db = mongoose.connection;
