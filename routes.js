@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const scrape = require('./scrape');
 const models = require('./models');
+const Company = require('./models').Company;
 
 
 

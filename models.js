@@ -30,6 +30,11 @@ function save(req, res, next) {
         });
     });
     // Fuer jedes Jahr die dazugehoerige Bilanzsumme speichern
+    if(!req.params.companyData.item[1]) {
+      let err = new Error(req.params.companyName + " hat noch keine Gewinnzahlen veröffentlicht.");
+      err.status = 404;
+      return next(err);
+    }
     req.params.companyData.item[1].data.data.forEach((element, index) => {
         data.forEach(dataElement => {
             if (dataElement.year === element.year) {
