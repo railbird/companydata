@@ -20,7 +20,7 @@ var layout = {barmode: 'group'};
 
 
 
-$('#searchButton').on('tap', function() {
+$('#searchButton').click(function() {
   var suchString = $('#suchString').val();
     $('.list-group').text("");
   $('#chart').text("");
