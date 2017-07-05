@@ -16,7 +16,7 @@ var chartData = [trace1, trace2];
 
 var layout = {barmode: 'group'};
 
-//Plotly.newPlot('chart', chartData);
+
 
 
 
