@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const scrape = require('./scrape');
 const models = require('./models');
+const Company = require('./models').Company;
 
 
 
@@ -12,7 +13,7 @@ module.exports = router;
 router.get("/", (req, res, next) => {
         if (req.query.name) {
             // mode = force to prevent the local DB lookup and force scraping
-            if (req.query.mode === "force") {
+            if (req.query.mode === "force" || req.query.hrb) {
                 return next();
             }
             let companyNameShort = req.query.name.slice(0, 10);

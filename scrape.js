@@ -27,7 +27,11 @@ let scrapeFor = function(req, res, next) {
                 searchResults.name = $('.summary').children().eq(i).text();
                 searchResults.link = $('.summary').children().eq(i).attr("href");
                 try {
-                    searchResults.HRB = $('.summary').children().eq(i).attr("href").split("HRB+")[1];
+                    let splitted = $('.summary').children().eq(i).attr("href").split("+");
+                    splitted = splitted[splitted.length - 1];
+                    searchResults.HRB = parseInt(splitted);
+                    if(!searchResults.HRB) searchResults.HRB = "";
+                  //searchResults.HRB = $('.summary').children().eq(i).attr("href").split("HRB+")[1];
                 } catch (err) {
                     searchResults.HRB = "";
                 }
