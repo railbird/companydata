@@ -19,7 +19,8 @@ var layout = {barmode: 'group'};
 //Plotly.newPlot('chart', chartData);
 
 
-$('#searchButton').on('click tap', function() {
+
+$('#searchButton').on('tap', function() {
   var suchString = $('#suchString').val();
     $('.list-group').text("");
   $('#chart').text("");
