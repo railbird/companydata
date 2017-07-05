@@ -50,8 +50,9 @@ function getCompanyData(suchString, hrbNummer) {
     trace1.y.splice(0);
     trace2.x.splice(0);
     trace2.y.splice(0);
-    var keys = companyData.data[0];
-    keys = Object.keys(keys);
+    var keys = getKeys(companyData.data);
+    /*var keys = companyData.data[0];
+    keys = Object.keys(keys);*/
     var description = "bilanzsumme";
     keys.forEach(function(element) {
       if(element === "umsatz") {
@@ -95,4 +96,16 @@ function handleError(companyData, suchString) {
     getCompanyData(suchString, this.dataset.hrb);
   });
 
+};
+
+// checken ob Umsatz oder Bilanzsumme veroeffentlicht wurde
+function getKeys(companyDataArray) {
+  for(var i = 0; i < companyDataArray.length; i++) {
+    if(Object.keys(companyDataArray[i]).length === 3) {
+      console.log(Object.keys(companyDataArray[i]));
+      return  Object.keys(companyDataArray[i]);
+      break;
+    }
+  }
+  return [];
 };
