@@ -25,7 +25,7 @@ $('#searchButton').click(function() {
     $('.list-group').text("");
   $('#chart').text("");
   //$('.list-group').text("");
-  getCompanyData(suchString);
+  if(suchString) getCompanyData(suchString);
 });
 
 $('#suchString').keypress(function(e) {
