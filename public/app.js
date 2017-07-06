@@ -70,7 +70,7 @@ function getCompanyData(suchString, hrbNummer) {
 
     trace2.name = description.charAt(0).toUpperCase() + description.slice(1);
     $('#chartTitle').text(companyData.name);
-    Plotly.newPlot('chart', chartData, layout);
+    Plotly.newPlot('chart', chartData, layout, {displayModeBar: false});
     //data.data.forEach(function(element)
   });
 };
