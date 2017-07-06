@@ -41,7 +41,7 @@ function getCompanyData(suchString, hrbNummer) {
     suchString = suchString + "&hrb=" + hrbNummer;
   }
 
-  $.getJSON("https://companydatav2.herokuapp.com/companies?name=" + suchString, function(companyData) { // https://companydatav2.herokuapp.com/ http://localhost:3002/
+  $.getJSON("https://companydatav2.herokuapp.com/companies?mode=force&name=" + suchString, function(companyData) { // https://companydatav2.herokuapp.com/ http://localhost:3002/
     if(companyData.error) {
       console.log(companyData.error.message);
       handleError(companyData, suchString);
