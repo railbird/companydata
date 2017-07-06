@@ -75,7 +75,7 @@ let scrapeFor = function(req, res, next) {
             req.params.companyData = JSON.parse(companyData);
             req.params.companyHistory = JSON.parse(companyHistory);
         } catch (err) {
-            err = new Error("Die Firma hat keine Unternehmenszahlen veröffentlicht");
+            err = new Error(req.params.companyName + " hat keine Unternehmenszahlen veröffentlicht");
             err.status = 404;
             return next(err);
         };
